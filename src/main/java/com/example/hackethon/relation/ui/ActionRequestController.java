@@ -1,4 +1,5 @@
 package com.example.hackethon.relation.ui;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.example.hackethon.relation.application.RelationService;
 import com.example.hackethon.relation.dto.ActionRequestResponse;
@@ -17,7 +18,7 @@ public class ActionRequestController {
 
     @GetMapping("/received")
     public ResponseEntity<List<ActionRequestResponse>> getReceivedRequests(
-            @RequestHeader("X-User-Id") Long currentUserId) {
+            @AuthenticationPrincipal Long currentUserId) {
         
         List<ActionRequestResponse> responses = relationService.getReceivedRequests(currentUserId);
         return ResponseEntity.ok(responses);
@@ -25,7 +26,7 @@ public class ActionRequestController {
 
     @PostMapping("/{id}/accept")
     public ResponseEntity<Void> acceptRequest(
-            @RequestHeader("X-User-Id") Long currentUserId,
+            @AuthenticationPrincipal Long currentUserId,
             @PathVariable Long id) {
         
         relationService.acceptRequest(currentUserId, id);
@@ -34,10 +35,11 @@ public class ActionRequestController {
 
     @PostMapping("/{id}/reject")
     public ResponseEntity<Void> rejectRequest(
-            @RequestHeader("X-User-Id") Long currentUserId,
+            @AuthenticationPrincipal Long currentUserId,
             @PathVariable Long id) {
         
         relationService.rejectRequest(currentUserId, id);
         return ResponseEntity.ok().build();
     }
 }
+

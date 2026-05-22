@@ -1,4 +1,5 @@
 package com.example.hackethon.match.ui;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.example.hackethon.match.application.SwipeService;
 import com.example.hackethon.match.dto.SwipeRequest;
@@ -15,10 +16,11 @@ public class SwipeController {
 
     @PostMapping
     public ResponseEntity<Void> processSwipe(
-            @RequestHeader("X-User-Id") Long currentUserId,
+            @AuthenticationPrincipal Long currentUserId,
             @RequestBody SwipeRequest request) {
         
         swipeService.processSwipe(currentUserId, request.getTargetUserId(), request.getAction(), request.getRelationAction());
         return ResponseEntity.ok().build();
     }
 }
+

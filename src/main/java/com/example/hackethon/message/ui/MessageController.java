@@ -1,4 +1,5 @@
 package com.example.hackethon.message.ui;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.example.hackethon.message.application.MessageService;
 import com.example.hackethon.message.dto.MessageRequest;
@@ -19,7 +20,7 @@ public class MessageController {
 
     @PostMapping
     public ResponseEntity<Void> sendMessage(
-            @RequestHeader("X-User-Id") Long currentUserId,
+            @AuthenticationPrincipal Long currentUserId,
             @RequestBody MessageRequest request) {
         
         messageService.sendMessage(currentUserId, request.getReceiverId(), request.getContent());
@@ -28,7 +29,7 @@ public class MessageController {
 
     @GetMapping("/rooms")
     public ResponseEntity<List<MessageRoomResponse>> getRooms(
-            @RequestHeader("X-User-Id") Long currentUserId) {
+            @AuthenticationPrincipal Long currentUserId) {
         
         List<MessageRoomResponse> rooms = messageService.getRooms(currentUserId);
         return ResponseEntity.ok(rooms);
@@ -36,10 +37,11 @@ public class MessageController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<MessageResponse>> getMessages(
-            @RequestHeader("X-User-Id") Long currentUserId,
+            @AuthenticationPrincipal Long currentUserId,
             @PathVariable Long userId) {
         
         List<MessageResponse> messages = messageService.getMessages(currentUserId, userId);
         return ResponseEntity.ok(messages);
     }
 }
+
