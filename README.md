@@ -251,7 +251,28 @@
 #### `GET /api/graph`
 전체 유저 노드와 연결된 관계 간선(Edge) 리스트를 반환하여 프론트엔드 네트워크 그래프 렌더링을 지원합니다.
 - **Authentication**: Required (`@AuthenticationPrincipal`)
-- **Response**: `GraphResponse` (노드 리스트, 엣지 리스트 포함)
+- **Response Body**
+  ```json
+  {
+    "nodes": [
+      {
+        "id": 1,
+        "name": "감자",
+        "introduction": "안녕하세요!"
+      }
+    ],
+    "edges": [
+      {
+        "id": 1,
+        "source": 1,
+        "target": 2,
+        "weight": 15,
+        "level": "GETTING_CLOSER",
+        "levelDescription": "친해지는 중"
+      }
+    ]
+  }
+  ```
 
 ---
 
@@ -259,12 +280,40 @@
 #### `GET /api/relations`
 시스템에 존재하는 모든 관계 내역을 조회합니다.
 - **Authentication**: Required (`@AuthenticationPrincipal`)
-- **Response**: `RelationResponse` 객체의 배열
+- **Response Body**
+  ```json
+  [
+    {
+      "id": 1,
+      "userAId": 1,
+      "userBId": 2,
+      "weight": 15,
+      "level": "GETTING_CLOSER",
+      "levelDescription": "친해지는 중",
+      "lastInteractedAt": "2026-05-22T14:00:00",
+      "performedActions": ["FOLLOW", "COFFEE"]
+    }
+  ]
+  ```
 
 #### `GET /api/users/{id}/relations`
 특정 유저의 모든 관계 내역을 조회합니다.
 - **Path Variable**: `id` (유저 ID)
-- **Response**: `RelationResponse` 객체의 배열
+- **Response Body**
+  ```json
+  [
+    {
+      "id": 1,
+      "userAId": 1,
+      "userBId": 2,
+      "weight": 15,
+      "level": "GETTING_CLOSER",
+      "levelDescription": "친해지는 중",
+      "lastInteractedAt": "2026-05-22T14:00:00",
+      "performedActions": ["FOLLOW", "COFFEE"]
+    }
+  ]
+  ```
 
 ---
 
@@ -275,3 +324,17 @@
 - **`PATCH /api/action-requests/{id}/accept`**: 요청 수락
 - **`PATCH /api/action-requests/{id}/reject`**: 요청 거절
 - **`PATCH /api/action-requests/{id}/complete`**: 행동 완료 처리
+
+(위 API들의 공통 Response Body 구조)
+  ```json
+  {
+    "id": 1,
+    "requesterId": 1,
+    "receiverId": 2,
+    "actionType": "COFFEE",
+    "status": "PENDING",
+    "createdAt": "2026-05-22T14:00:00",
+    "respondedAt": null,
+    "completedAt": null
+  }
+  ```
