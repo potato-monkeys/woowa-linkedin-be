@@ -21,9 +21,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.security.test.context.support.WithMockUser;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@WithMockUser
 class ActionRequestControllerTest {
 
     @Autowired
@@ -39,8 +42,8 @@ class ActionRequestControllerTest {
     @DisplayName("행동 요청을 생성하고 수락 후 완료하면 관계가 생성된다")
     void createAcceptCompleteFlow() throws Exception {
         // given
-        User requester = userRepository.save(new User("감자", "감자입니다"));
-        User receiver = userRepository.save(new User("고구마", "고구마입니다"));
+        User requester = userRepository.save(new User("감자", "password", "감자입니다"));
+        User receiver = userRepository.save(new User("고구마", "password", "고구마입니다"));
 
         ActionRequestCreateRequest createRequest =
                 new ActionRequestCreateRequest(requester.getId(), receiver.getId(), "COFFEE");
@@ -88,8 +91,8 @@ class ActionRequestControllerTest {
     @DisplayName("동일 두 사용자가 행동을 반복하면 관계 점수가 누적된다")
     void weightAccumulation() throws Exception {
         // given
-        User a = userRepository.save(new User("감자", "감자입니다"));
-        User b = userRepository.save(new User("고구마", "고구마입니다"));
+        User a = userRepository.save(new User("감자", "password", "감자입니다"));
+        User b = userRepository.save(new User("고구마", "password", "고구마입니다"));
 
         // 첫 번째 행동: 커피(+4)
         completeAction(a.getId(), b.getId(), "COFFEE");
@@ -110,9 +113,9 @@ class ActionRequestControllerTest {
     @Test
     @DisplayName("그래프 API는 노드(사용자)와 간선(관계)을 반환한다")
     void graphApi() throws Exception {
-        User a = userRepository.save(new User("감자", "감자"));
-        User b = userRepository.save(new User("고구마", "고구마"));
-        User c = userRepository.save(new User("당근", "당근"));
+        User a = userRepository.save(new User("감자", "password", "감자"));
+        User b = userRepository.save(new User("고구마", "password", "고구마"));
+        User c = userRepository.save(new User("당근", "password", "당근"));
 
         completeAction(a.getId(), b.getId(), "FOLLOW");
 

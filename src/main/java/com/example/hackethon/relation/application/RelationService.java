@@ -1,11 +1,11 @@
 package com.example.hackethon.relation.application;
 
-import com.example.hackethon.relation.domain.ActionRequest;
-import com.example.hackethon.relation.domain.ActionRequestRepository;
-import com.example.hackethon.relation.domain.ActionRequestStatus;
+import com.example.hackethon.relation.domain.RelationActionRequest;
+import com.example.hackethon.relation.domain.RelationActionRequestRepository;
+import com.example.hackethon.relation.domain.RelationActionRequestStatus;
 import com.example.hackethon.relation.domain.RelationshipEdge;
 import com.example.hackethon.relation.domain.RelationshipEdgeRepository;
-import com.example.hackethon.relation.dto.ActionRequestResponse;
+import com.example.hackethon.relation.dto.RelationActionRequestResponse;
 import com.example.hackethon.action.domain.ActionType;
 import com.example.hackethon.relation.domain.Relation;
 import com.example.hackethon.relation.domain.RelationRepository;
@@ -21,20 +21,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RelationService {
 
-    private final ActionRequestRepository actionRequestRepository;
+    private final RelationActionRequestRepository RelationActionRequestRepository;
     private final RelationshipEdgeRepository edgeRepository;
     private final RelationRepository relationRepository;
 
     @Transactional
     public void acceptRequest(Long currentUserId, Long requestId) {
-        ActionRequest request = actionRequestRepository.findById(requestId)
+        RelationActionRequest request = RelationActionRequestRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid request ID"));
 
         if (!request.getReceiverId().equals(currentUserId)) {
             throw new IllegalArgumentException("You are not the receiver of this request");
         }
 
-        if (request.getStatus() != ActionRequestStatus.PENDING) {
+        if (request.getStatus() != RelationActionRequestStatus.PENDING) {
             throw new IllegalStateException("Request is not pending");
         }
 
@@ -50,14 +50,14 @@ public class RelationService {
 
     @Transactional
     public void rejectRequest(Long currentUserId, Long requestId) {
-        ActionRequest request = actionRequestRepository.findById(requestId)
+        RelationActionRequest request = RelationActionRequestRepository.findById(requestId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid request ID"));
 
         if (!request.getReceiverId().equals(currentUserId)) {
             throw new IllegalArgumentException("You are not the receiver of this request");
         }
 
-        if (request.getStatus() != ActionRequestStatus.PENDING) {
+        if (request.getStatus() != RelationActionRequestStatus.PENDING) {
             throw new IllegalStateException("Request is not pending");
         }
 
@@ -65,10 +65,10 @@ public class RelationService {
     }
 
     @Transactional(readOnly = true)
-    public List<ActionRequestResponse> getReceivedRequests(Long currentUserId) {
-        return actionRequestRepository.findByReceiverIdAndStatusOrderByCreatedAtDesc(currentUserId, ActionRequestStatus.PENDING)
+    public List<RelationActionRequestResponse> getReceivedRequests(Long currentUserId) {
+        return RelationActionRequestRepository.findByReceiverIdAndStatusOrderByCreatedAtDesc(currentUserId, RelationActionRequestStatus.PENDING)
                 .stream()
-                .map(r -> new ActionRequestResponse(r.getId(), r.getSenderId(), r.getAction(), r.getCreatedAt()))
+                .map(r -> new RelationActionRequestResponse(r.getId(), r.getSenderId(), r.getAction(), r.getCreatedAt()))
                 .collect(Collectors.toList());
     }
 
@@ -95,3 +95,4 @@ public class RelationService {
         return relationRepository.findAllByUserId(userId);
     }
 }
+

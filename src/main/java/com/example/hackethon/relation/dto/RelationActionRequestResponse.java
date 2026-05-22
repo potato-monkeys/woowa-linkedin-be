@@ -7,9 +7,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class ActionRequestResponse {
+public class RelationActionRequestResponse {
     private Long id;
     private Long senderId;
     private RelationAction action;
     private LocalDateTime createdAt;
 }
+

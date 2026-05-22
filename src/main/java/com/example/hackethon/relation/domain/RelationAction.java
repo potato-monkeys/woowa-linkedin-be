@@ -14,3 +14,4 @@ public enum RelationAction {
 
     private final int weight;
 }
+

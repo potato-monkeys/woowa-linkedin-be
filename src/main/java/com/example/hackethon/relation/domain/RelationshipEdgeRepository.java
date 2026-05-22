@@ -11,3 +11,4 @@ public interface RelationshipEdgeRepository extends JpaRepository<RelationshipEd
     @Query("SELECT r FROM RelationshipEdge r WHERE r.user1Id = :user1Id AND r.user2Id = :user2Id")
     Optional<RelationshipEdge> findEdge(@Param("user1Id") Long user1Id, @Param("user2Id") Long user2Id);
 }
+

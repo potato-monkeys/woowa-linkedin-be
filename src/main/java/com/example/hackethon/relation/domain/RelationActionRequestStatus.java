@@ -1,5 +1,6 @@
 package com.example.hackethon.relation.domain;
 
-public enum ActionRequestStatus {
+public enum RelationActionRequestStatus {
     PENDING, ACCEPTED, REJECTED
 }
+

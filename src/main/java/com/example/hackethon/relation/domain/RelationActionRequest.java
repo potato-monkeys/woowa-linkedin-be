@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "action_requests")
+@Table(name = "relation_action_requests")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ActionRequest {
+public class RelationActionRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,24 +28,25 @@ public class ActionRequest {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ActionRequestStatus status;
+    private RelationActionRequestStatus status;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    public ActionRequest(Long senderId, Long receiverId, RelationAction action) {
+    public RelationActionRequest(Long senderId, Long receiverId, RelationAction action) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.action = action;
-        this.status = ActionRequestStatus.PENDING;
+        this.status = RelationActionRequestStatus.PENDING;
         this.createdAt = LocalDateTime.now();
     }
 
     public void accept() {
-        this.status = ActionRequestStatus.ACCEPTED;
+        this.status = RelationActionRequestStatus.ACCEPTED;
     }
 
     public void reject() {
-        this.status = ActionRequestStatus.REJECTED;
+        this.status = RelationActionRequestStatus.REJECTED;
     }
 }
+

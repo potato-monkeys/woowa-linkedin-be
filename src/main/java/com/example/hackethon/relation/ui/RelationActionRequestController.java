@@ -2,7 +2,7 @@ package com.example.hackethon.relation.ui;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.example.hackethon.relation.application.RelationService;
-import com.example.hackethon.relation.dto.ActionRequestResponse;
+import com.example.hackethon.relation.dto.RelationActionRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +12,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/requests")
 @RequiredArgsConstructor
-public class ActionRequestController {
+public class RelationActionRequestController {
 
     private final RelationService relationService;
 
     @GetMapping("/received")
-    public ResponseEntity<List<ActionRequestResponse>> getReceivedRequests(
+    public ResponseEntity<List<RelationActionRequestResponse>> getReceivedRequests(
             @AuthenticationPrincipal Long currentUserId) {
         
-        List<ActionRequestResponse> responses = relationService.getReceivedRequests(currentUserId);
+        List<RelationActionRequestResponse> responses = relationService.getReceivedRequests(currentUserId);
         return ResponseEntity.ok(responses);
     }
 
@@ -42,4 +42,5 @@ public class ActionRequestController {
         return ResponseEntity.ok().build();
     }
 }
+
 

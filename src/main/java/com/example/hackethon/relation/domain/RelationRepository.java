@@ -14,3 +14,4 @@ public interface RelationRepository extends JpaRepository<Relation, Long> {
     @Query("SELECT r FROM Relation r WHERE r.userAId = :userId OR r.userBId = :userId")
     List<Relation> findAllByUserId(@Param("userId") Long userId);
 }
+

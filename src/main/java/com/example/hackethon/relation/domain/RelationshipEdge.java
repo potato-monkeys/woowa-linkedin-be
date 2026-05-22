@@ -35,3 +35,4 @@ public class RelationshipEdge {
         this.weight += additionalWeight;
     }
 }
+

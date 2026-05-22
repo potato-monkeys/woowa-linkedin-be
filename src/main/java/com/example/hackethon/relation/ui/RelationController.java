@@ -31,3 +31,4 @@ public class RelationController {
         return ResponseEntity.ok(relations);
     }
 }
+

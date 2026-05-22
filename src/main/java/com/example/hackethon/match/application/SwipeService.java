@@ -3,8 +3,8 @@ package com.example.hackethon.match.application;
 import com.example.hackethon.match.domain.Swipe;
 import com.example.hackethon.match.domain.SwipeAction;
 import com.example.hackethon.match.domain.SwipeRepository;
-import com.example.hackethon.relation.domain.ActionRequest;
-import com.example.hackethon.relation.domain.ActionRequestRepository;
+import com.example.hackethon.relation.domain.RelationActionRequest;
+import com.example.hackethon.relation.domain.RelationActionRequestRepository;
 import com.example.hackethon.relation.domain.RelationAction;
 import com.example.hackethon.message.application.MessageService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SwipeService {
 
     private final SwipeRepository swipeRepository;
-    private final ActionRequestRepository actionRequestRepository;
+    private final RelationActionRequestRepository actionRequestRepository;
     private final MessageService messageService;
 
     @Transactional
@@ -29,7 +29,7 @@ public class SwipeService {
         swipeRepository.save(swipe);
 
         if (action == SwipeAction.PROPOSE && relationAction != null) {
-            ActionRequest request = new ActionRequest(currentUserId, targetUserId, relationAction);
+            RelationActionRequest request = new RelationActionRequest(currentUserId, targetUserId, relationAction);
             actionRequestRepository.save(request);
         } else if (action == SwipeAction.PASS) {
             // Send automatic message on PASS (rejecting all actions)
