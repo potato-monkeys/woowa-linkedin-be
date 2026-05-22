@@ -8,6 +8,6 @@ public record GraphNodeResponse(
         String introduction
 ) {
     public static GraphNodeResponse from(User user) {
-        return new GraphNodeResponse(user.getId(), user.getName(), user.getIntroduction());
+        return new GraphNodeResponse(user.getId(), user.getNickname(), user.getIntroduction());
     }
 }

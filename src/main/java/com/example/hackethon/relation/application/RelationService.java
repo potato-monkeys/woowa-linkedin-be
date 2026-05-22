@@ -70,6 +70,8 @@ public class RelationService {
                 .stream()
                 .map(r -> new ActionRequestResponse(r.getId(), r.getSenderId(), r.getAction(), r.getCreatedAt()))
                 .collect(Collectors.toList());
+    }
+
     @Transactional
     public Relation applyAction(Long userId1, Long userId2, ActionType actionType, LocalDateTime now) {
         Long aId = Math.min(userId1, userId2);

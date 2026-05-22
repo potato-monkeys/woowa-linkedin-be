@@ -16,7 +16,7 @@ public enum RelationLevel {
     private final int minWeight;
     private final int maxWeight;
 
-    public static RelationLevel fromWeight(int weight) {
+    public static RelationLevel from(int weight) {
         for (RelationLevel level : values()) {
             if (weight >= level.minWeight && weight <= level.maxWeight) {
                 return level;
