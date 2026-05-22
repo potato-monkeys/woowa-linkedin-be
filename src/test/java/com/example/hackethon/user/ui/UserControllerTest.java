@@ -2,7 +2,7 @@ package com.example.hackethon.user.ui;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,7 +81,7 @@ class UserControllerTest {
         String token = signupAndGetToken("bob", "pw123", "소개글");
 
         UpdateProfileRequest request = new UpdateProfileRequest(null, "수정된 소개글", null, null);
-        mockMvc.perform(patch("/api/users/me")
+        mockMvc.perform(put("/api/users/me")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

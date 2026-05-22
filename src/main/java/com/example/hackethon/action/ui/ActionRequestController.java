@@ -8,7 +8,7 @@ import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,7 +33,7 @@ public class ActionRequestController {
         return ResponseEntity.ok(actionRequestService.findOne(id));
     }
 
-    @PatchMapping("/{id}/accept")
+    @PutMapping("/{id}/accept")
     public ResponseEntity<ActionRequestResponse> accept(
             @PathVariable Long id,
             @RequestBody ActionRequestUserRequest request
@@ -41,7 +41,7 @@ public class ActionRequestController {
         return ResponseEntity.ok(actionRequestService.accept(id, request));
     }
 
-    @PatchMapping("/{id}/reject")
+    @PutMapping("/{id}/reject")
     public ResponseEntity<ActionRequestResponse> reject(
             @PathVariable Long id,
             @RequestBody ActionRequestUserRequest request
@@ -49,7 +49,7 @@ public class ActionRequestController {
         return ResponseEntity.ok(actionRequestService.reject(id, request));
     }
 
-    @PatchMapping("/{id}/complete")
+    @PutMapping("/{id}/complete")
     public ResponseEntity<ActionRequestResponse> complete(
             @PathVariable Long id,
             @RequestBody ActionRequestUserRequest request

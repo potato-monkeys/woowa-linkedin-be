@@ -1,7 +1,7 @@
 package com.example.hackethon.action.ui;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,7 +64,7 @@ class ActionRequestControllerTest {
 
         // when: 수신자가 수락
         ActionRequestUserRequest receiverAction = new ActionRequestUserRequest(receiver.getId());
-        mockMvc.perform(patch(location + "/accept")
+        mockMvc.perform(put(location + "/accept")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(receiverAction)))
                 .andExpect(status().isOk())
@@ -72,7 +72,7 @@ class ActionRequestControllerTest {
 
         // when: 요청자가 수행 완료
         ActionRequestUserRequest requesterAction = new ActionRequestUserRequest(requester.getId());
-        mockMvc.perform(patch(location + "/complete")
+        mockMvc.perform(put(location + "/complete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requesterAction)))
                 .andExpect(status().isOk())
@@ -135,11 +135,11 @@ class ActionRequestControllerTest {
                         .content(objectMapper.writeValueAsString(createRequest)))
                 .andReturn().getResponse().getHeader("Location");
 
-        mockMvc.perform(patch(location + "/accept")
+        mockMvc.perform(put(location + "/accept")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(new ActionRequestUserRequest(receiverId))));
 
-        mockMvc.perform(patch(location + "/complete")
+        mockMvc.perform(put(location + "/complete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(new ActionRequestUserRequest(requesterId))));
     }
