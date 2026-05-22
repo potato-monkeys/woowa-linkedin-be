@@ -1,6 +1,6 @@
-﻿# 우테코 링크드인 - Backend 3 (추천 / 스와이프 / 메시지)
+# 우테코 링크드인 - 프로젝트 API 및 도메인 명세서
 
-본 문서는 우테코 링크드인 프로젝트의 **Backend 3 도메인(추천, 스와이프, 메시지)** 구현 내용을 정리한 문서입니다. 기획 문서의 "관계 간선 그래프" 기반 인맥 시각화 및 행동 제안 기능을 지원하도록 설계되었습니다.
+본 문서는 우테코 링크드인 프로젝트의 **도메인(유저, 추천, 스와이프, 메시지 등)** 구현 내용을 정리한 문서입니다. 기획 문서의 "관계 간선 그래프" 기반 인맥 시각화 및 행동 제안 기능을 지원하도록 설계되었습니다.
 
 ---
 
@@ -58,27 +58,103 @@
 
 ## 📝 API 명세서 (API Specification)
 
-모든 API는 요청 헤더에 현재 로그인된 유저의 ID를 Spring Security의 `@AuthenticationPrincipal`을 통해 현재 로그인된 유저의 ID를 받아옵니다.
+모든 인증이 필요한 API는 Spring Security의 `@AuthenticationPrincipal`을 통해 현재 로그인된 유저의 정보를 받아옵니다. 프론트엔드는 로그인 시 발급받은 토큰(또는 세션)을 통해 인증을 수행해야 합니다.
 
-### 1. 추천 API
+### 1. 유저 (User) API
+#### `POST /api/users/signup`
+새로운 크루 회원가입을 진행합니다.
+- **Request Body**
+  ```json
+  {
+    "nickname": "감자",
+    "password": "password123!",
+    "introduction": "안녕하세요!"
+  }
+  ```
+- **Response**: `201 Created`
+
+#### `POST /api/users/login`
+로그인을 수행하고 인증 정보를 반환받습니다.
+- **Request Body**
+  ```json
+  {
+    "nickname": "감자",
+    "password": "password123!"
+  }
+  ```
+- **Response Body**
+  - 로그인 성공에 대한 토큰 및 유저 정보 객체 반환 (`LoginResponse`)
+
+#### `GET /api/users/me`
+현재 로그인한 나의 프로필 정보를 조회합니다.
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Response Body** (`UserResponse`)
+  ```json
+  {
+    "id": 1,
+    "nickname": "감자",
+    "introduction": "안녕하세요!",
+    "profileImageUrl": "https://...",
+    "recordingFileUrl": "https://..."
+  }
+  ```
+
+#### `PATCH /api/users/me`
+내 프로필 정보(닉네임, 소개글, 비밀번호 등)를 수정합니다.
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Request Body**
+  ```json
+  {
+    "nickname": "구운감자",
+    "introduction": "반가워요",
+    "currentPassword": "password123!",
+    "newPassword": "newpassword123!"
+  }
+  ```
+- **Response Body**: 수정된 `UserResponse` 객체
+
+#### `POST /api/users/me/profile-image`
+내 프로필 이미지를 업로드/수정합니다.
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Request (Multipart/form-data)**
+  - `file`: 이미지 파일 (MultipartFile)
+- **Response Body**: 수정된 `UserResponse` 객체
+
+#### `POST /api/users/me/recording`
+내 음성 소개 녹음 파일을 업로드/수정합니다.
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Request (Multipart/form-data)**
+  - `file`: 녹음 파일 (MultipartFile, Optional)
+  - `defaultUrl`: 기본 URL (String, Optional)
+- **Response Body**: 수정된 `UserResponse` 객체
+
+#### `GET /api/users/{id}`
+특정 유저의 프로필 정보를 조회합니다.
+- **Path Variable**: `id` (유저 ID)
+- **Response Body**: `UserResponse` 객체
+
+---
+
+### 2. 추천 (Recommendation) API
 #### `GET /recommendations`
 나와 가까운(관계 가중치 점수가 높은) 크루 최대 20명을 추천합니다.
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID) (현재 유저 ID)
+- **Authentication**: Required (`@AuthenticationPrincipal`)
 - **Response Body**
   ```json
   [
     {
       "userId": 2,
       "score": 15
-    },
-    ...
+    }
   ]
   ```
 
-### 2. 스와이프 (행위 제안) API
+---
+
+### 3. 스와이프 (행위 제안) API
 #### `POST /swipes`
 추천된 크루에게 특정 행위를 제안하거나 거절(PASS)합니다.
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID)
+- **Authentication**: Required (`@AuthenticationPrincipal`)
 - **Request Body**
   ```json
   {
@@ -87,13 +163,14 @@
     "relationAction": "COFFEE" // action이 "PROPOSE"일 때만 포함 (FOLLOW, MESSAGE, COFFEE, MEAL, DRINK)
   }
   ```
-- **Response**
-  - `200 OK` (모두 거절 `PASS` 처리 시에는 서버에서 자동으로 해당 대상에게 위로 메시지를 발송합니다.)
+- **Response**: `200 OK` (모두 거절 `PASS` 처리 시에는 서버에서 자동으로 해당 대상에게 위로 메시지를 발송합니다.)
 
-### 3. 제안 수락/거절 API
+---
+
+### 4. 제안 수락/거절 API
 #### `GET /requests/received`
 나에게 들어온 대기 중(`PENDING`)인 행위 제안 목록을 최신순으로 조회합니다.
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID)
+- **Authentication**: Required (`@AuthenticationPrincipal`)
 - **Response Body**
   ```json
   [
@@ -108,24 +185,22 @@
 
 #### `POST /requests/{id}/accept`
 상대방이 나에게 제안한 특정 행위(예: 커피 마시기)를 수락합니다. 수락 시 제안된 행위의 가중치만큼 두 사람의 관계 그래프 가중치가 증가합니다.
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID)
-- **Path Variable**
-  - `id`: ActionRequest(제안) ID
-- **Response**
-  - `200 OK`
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Path Variable**: `id` (ActionRequest 제안 ID)
+- **Response**: `200 OK`
 
 #### `POST /requests/{id}/reject`
 상대방이 나에게 제안한 행위를 거절합니다.
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID)
-- **Path Variable**
-  - `id`: ActionRequest(제안) ID
-- **Response**
-  - `200 OK`
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Path Variable**: `id` (ActionRequest 제안 ID)
+- **Response**: `200 OK`
 
-### 4. 메시지 API
+---
+
+### 5. 메시지 (Message) API
 #### `POST /messages`
 특정 크루에게 쪽지를 발송합니다. (발송 시 `MESSAGE` 가중치 2점이 관계 그래프에 자동으로 추가됩니다.)
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID)
+- **Authentication**: Required (`@AuthenticationPrincipal`)
 - **Request Body**
   ```json
   {
@@ -133,12 +208,11 @@
     "content": "안녕하세요, 같이 커피 한 잔 하실래요?"
   }
   ```
-- **Response**
-  - `200 OK`
+- **Response**: `200 OK`
 
 #### `GET /messages/rooms`
 내가 참여 중인 대화방 목록을 최근 업데이트 순으로 조회합니다.
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID)
+- **Authentication**: Required (`@AuthenticationPrincipal`)
 - **Response Body**
   ```json
   [
@@ -154,9 +228,8 @@
 
 #### `GET /messages/{userId}`
 특정 크루와의 전체 메시지 내역을 조회합니다. API 호출 시 상대방이 보낸 메시지들은 일괄 읽음(`isRead = true`) 처리됩니다.
-- **Authentication**`r`n  - `@AuthenticationPrincipal`: Long (현재 유저 ID)
-- **Path Variable**
-  - `userId`: 상대방 유저 ID
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Path Variable**: `userId` (상대방 유저 ID)
 - **Response Body**
   ```json
   [
@@ -178,4 +251,3 @@
 
 1. **랜딩 페이지용 전체 그래프 조회 API**
    - 프론트엔드에서 네트워크 그래프를 그릴 수 있도록, 전체 유저의 노드 정보와 `RelationshipEdge` 리스트를 DTO로 반환하는 API.
-
