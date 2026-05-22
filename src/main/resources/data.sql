@@ -100,3 +100,40 @@ INSERT INTO relation_actions (relation_id, action_type) VALUES (10, 'DRINK');
 INSERT INTO relation_actions (relation_id, action_type) VALUES (10, 'DRINK');
 INSERT INTO relation_actions (relation_id, action_type) VALUES (10, 'DRINK');
 INSERT INTO relation_actions (relation_id, action_type) VALUES (10, 'DRINK');
+
+-- ---------------- MESSAGE_ROOMS ----------------
+-- 감자(1) ↔ 고구마(2), 당근(3), 양파(4) 대화방
+INSERT INTO message_rooms (id, user1_id, user2_id, last_message_content, updated_at)
+VALUES (1, 1, 2, '내일 같이 스터디 해요!', CURRENT_TIMESTAMP);
+INSERT INTO message_rooms (id, user1_id, user2_id, last_message_content, updated_at)
+VALUES (2, 1, 3, '점심 같이 먹어요~', CURRENT_TIMESTAMP);
+INSERT INTO message_rooms (id, user1_id, user2_id, last_message_content, updated_at)
+VALUES (3, 1, 4, '안녕하세요!', CURRENT_TIMESTAMP);
+
+-- ---------------- MESSAGES ----------------
+-- 룸1 (감자 ↔ 고구마): 읽지 않은 메시지 1개
+INSERT INTO messages (id, room_id, sender_id, content, is_read, created_at)
+VALUES (1, 1, 2, '감자씨 안녕하세요! 저 고구마입니다 :)', TRUE, CURRENT_TIMESTAMP);
+INSERT INTO messages (id, room_id, sender_id, content, is_read, created_at)
+VALUES (2, 1, 1, '고구마씨 반가워요!', TRUE, CURRENT_TIMESTAMP);
+INSERT INTO messages (id, room_id, sender_id, content, is_read, created_at)
+VALUES (3, 1, 2, '내일 같이 스터디 해요!', FALSE, CURRENT_TIMESTAMP);
+
+-- 룸2 (감자 ↔ 당근): 읽지 않은 메시지 1개
+INSERT INTO messages (id, room_id, sender_id, content, is_read, created_at)
+VALUES (4, 2, 3, '감자씨, 점심 같이 먹어요~', FALSE, CURRENT_TIMESTAMP);
+INSERT INTO messages (id, room_id, sender_id, content, is_read, created_at)
+VALUES (5, 2, 1, '좋아요! 어디로 갈까요?', TRUE, CURRENT_TIMESTAMP);
+
+-- 룸3 (감자 ↔ 양파): 읽지 않은 메시지 1개
+INSERT INTO messages (id, room_id, sender_id, content, is_read, created_at)
+VALUES (6, 3, 4, '안녕하세요!', FALSE, CURRENT_TIMESTAMP);
+
+-- ---------------- RELATION_ACTION_REQUESTS ----------------
+-- 감자(1)에게 온 PENDING 요청 3개 → RequestsPanel 확인용
+INSERT INTO relation_action_requests (id, sender_id, receiver_id, action, status, created_at)
+VALUES (1, 5, 1, 'COFFEE', 'PENDING', CURRENT_TIMESTAMP);
+INSERT INTO relation_action_requests (id, sender_id, receiver_id, action, status, created_at)
+VALUES (2, 6, 1, 'MEAL', 'PENDING', CURRENT_TIMESTAMP);
+INSERT INTO relation_action_requests (id, sender_id, receiver_id, action, status, created_at)
+VALUES (3, 7, 1, 'DRINK', 'PENDING', CURRENT_TIMESTAMP);
