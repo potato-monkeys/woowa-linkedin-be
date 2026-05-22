@@ -245,9 +245,33 @@
 
 ---
 
-## 🛠️ 향후 과제 (Next Steps)
+---
 
-프론트엔드 연동과 함께 기획을 완벽히 소화하기 위해 다음 API의 추가 구현이 권장됩니다.
+### 6. 그래프 (Graph) API
+#### `GET /api/graph`
+전체 유저 노드와 연결된 관계 간선(Edge) 리스트를 반환하여 프론트엔드 네트워크 그래프 렌더링을 지원합니다.
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Response**: `GraphResponse` (노드 리스트, 엣지 리스트 포함)
 
-1. **랜딩 페이지용 전체 그래프 조회 API**
-   - 프론트엔드에서 네트워크 그래프를 그릴 수 있도록, 전체 유저의 노드 정보와 `RelationshipEdge` 리스트를 DTO로 반환하는 API.
+---
+
+### 7. 관계 전체 조회 (Relation) API
+#### `GET /api/relations`
+시스템에 존재하는 모든 관계 내역을 조회합니다.
+- **Authentication**: Required (`@AuthenticationPrincipal`)
+- **Response**: `RelationResponse` 객체의 배열
+
+#### `GET /api/users/{id}/relations`
+특정 유저의 모든 관계 내역을 조회합니다.
+- **Path Variable**: `id` (유저 ID)
+- **Response**: `RelationResponse` 객체의 배열
+
+---
+
+### 8. 직접 행동 제안 (Action Request - 직접 요청 API)
+추천이나 스와이프를 통하지 않고, 유저 간에 직접 행위를 요청하고 응답하는 API입니다.
+- **`POST /api/action-requests`**: 새로운 행동 요청 생성 (`requesterId`, `receiverId`, `actionType` 포함)
+- **`GET /api/action-requests/{id}`**: 특정 행동 요청 단건 조회
+- **`PATCH /api/action-requests/{id}/accept`**: 요청 수락
+- **`PATCH /api/action-requests/{id}/reject`**: 요청 거절
+- **`PATCH /api/action-requests/{id}/complete`**: 행동 완료 처리
