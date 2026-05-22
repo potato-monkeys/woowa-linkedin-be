@@ -103,11 +103,11 @@ INSERT INTO relation_actions (relation_id, action_type) VALUES (10, 'DRINK');
 
 -- ---------------- MESSAGE_ROOMS ----------------
 -- 감자(1) ↔ 고구마(2), 당근(3), 양파(4) 대화방
-INSERT INTO message_rooms (id, user1_id, user2_id, last_message_content, updated_at)
+INSERT INTO message_rooms (id, user1id, user2id, last_message_content, updated_at)
 VALUES (1, 1, 2, '내일 같이 스터디 해요!', CURRENT_TIMESTAMP);
-INSERT INTO message_rooms (id, user1_id, user2_id, last_message_content, updated_at)
+INSERT INTO message_rooms (id, user1id, user2id, last_message_content, updated_at)
 VALUES (2, 1, 3, '점심 같이 먹어요~', CURRENT_TIMESTAMP);
-INSERT INTO message_rooms (id, user1_id, user2_id, last_message_content, updated_at)
+INSERT INTO message_rooms (id, user1id, user2id, last_message_content, updated_at)
 VALUES (3, 1, 4, '안녕하세요!', CURRENT_TIMESTAMP);
 
 -- ---------------- MESSAGES ----------------
