@@ -1,9 +1,12 @@
 package com.example.hackethon.relation.ui;
 
 import com.example.hackethon.relation.application.RelationService;
+import com.example.hackethon.relation.dto.ActionRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/requests")
@@ -11,6 +14,14 @@ import org.springframework.web.bind.annotation.*;
 public class ActionRequestController {
 
     private final RelationService relationService;
+
+    @GetMapping("/received")
+    public ResponseEntity<List<ActionRequestResponse>> getReceivedRequests(
+            @RequestHeader("X-User-Id") Long currentUserId) {
+        
+        List<ActionRequestResponse> responses = relationService.getReceivedRequests(currentUserId);
+        return ResponseEntity.ok(responses);
+    }
 
     @PostMapping("/{id}/accept")
     public ResponseEntity<Void> acceptRequest(

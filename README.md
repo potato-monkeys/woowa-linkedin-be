@@ -93,6 +93,22 @@
   - `200 OK` (모두 거절 `PASS` 처리 시에는 서버에서 자동으로 해당 대상에게 위로 메시지를 발송합니다.)
 
 ### 3. 제안 수락/거절 API
+#### `GET /requests/received`
+나에게 들어온 대기 중(`PENDING`)인 행위 제안 목록을 최신순으로 조회합니다.
+- **Request Header**
+  - `X-User-Id`: Long
+- **Response Body**
+  ```json
+  [
+    {
+      "id": 1,
+      "senderId": 3,
+      "action": "COFFEE",
+      "createdAt": "2026-05-22T14:00:00"
+    }
+  ]
+  ```
+
 #### `POST /requests/{id}/accept`
 상대방이 나에게 제안한 특정 행위(예: 커피 마시기)를 수락합니다. 수락 시 제안된 행위의 가중치만큼 두 사람의 관계 그래프 가중치가 증가합니다.
 - **Request Header**

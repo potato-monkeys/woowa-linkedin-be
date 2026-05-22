@@ -5,9 +5,13 @@ import com.example.hackethon.relation.domain.ActionRequestRepository;
 import com.example.hackethon.relation.domain.ActionRequestStatus;
 import com.example.hackethon.relation.domain.RelationshipEdge;
 import com.example.hackethon.relation.domain.RelationshipEdgeRepository;
+import com.example.hackethon.relation.dto.ActionRequestResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +57,13 @@ public class RelationService {
         }
 
         request.reject();
+    }
+
+    @Transactional(readOnly = true)
+    public List<ActionRequestResponse> getReceivedRequests(Long currentUserId) {
+        return actionRequestRepository.findByReceiverIdAndStatusOrderByCreatedAtDesc(currentUserId, ActionRequestStatus.PENDING)
+                .stream()
+                .map(r -> new ActionRequestResponse(r.getId(), r.getSenderId(), r.getAction(), r.getCreatedAt()))
+                .collect(Collectors.toList());
     }
 }
