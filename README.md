@@ -319,11 +319,47 @@
 
 ### 8. 직접 행동 제안 (Action Request - 직접 요청 API)
 추천이나 스와이프를 통하지 않고, 유저 간에 직접 행위를 요청하고 응답하는 API입니다.
-- **`POST /api/action-requests`**: 새로운 행동 요청 생성 (`requesterId`, `receiverId`, `actionType` 포함)
-- **`GET /api/action-requests/{id}`**: 특정 행동 요청 단건 조회
-- **`PATCH /api/action-requests/{id}/accept`**: 요청 수락
-- **`PATCH /api/action-requests/{id}/reject`**: 요청 거절
-- **`PATCH /api/action-requests/{id}/complete`**: 행동 완료 처리
+
+#### `POST /api/action-requests`
+새로운 행동 요청을 생성합니다.
+- **Request Body**
+  ```json
+  {
+    "requesterId": 1,
+    "receiverId": 2,
+    "actionType": "COFFEE"
+  }
+  ```
+
+#### `GET /api/action-requests/{id}`
+특정 행동 요청의 현재 상태를 단건 조회합니다.
+
+#### `PATCH /api/action-requests/{id}/accept`
+받은 요청을 수락합니다.
+- **Request Body**
+  ```json
+  {
+    "userId": 2
+  }
+  ```
+
+#### `PATCH /api/action-requests/{id}/reject`
+받은 요청을 거절합니다.
+- **Request Body**
+  ```json
+  {
+    "userId": 2
+  }
+  ```
+
+#### `PATCH /api/action-requests/{id}/complete`
+수락된 행동을 최종 완료(완수) 처리합니다.
+- **Request Body**
+  ```json
+  {
+    "userId": 1
+  }
+  ```
 
 (위 API들의 공통 Response Body 구조)
   ```json
