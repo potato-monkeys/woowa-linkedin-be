@@ -9,6 +9,7 @@ import com.example.hackethon.user.dto.UpdateProfileRequest;
 import com.example.hackethon.user.dto.UserResponse;
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,6 +66,11 @@ public class UserController {
             @RequestParam(value = "file", required = false) MultipartFile file,
             @RequestParam(value = "defaultUrl", required = false) String defaultUrl) {
         return ResponseEntity.ok(userService.updateRecording(principal.getId(), file, defaultUrl));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> findAll() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")

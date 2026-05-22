@@ -10,6 +10,7 @@ import com.example.hackethon.user.dto.LoginResponse;
 import com.example.hackethon.user.dto.SignupRequest;
 import com.example.hackethon.user.dto.UpdateProfileRequest;
 import com.example.hackethon.user.dto.UserResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -91,6 +92,12 @@ public class UserService {
         }
         user.updateRecordingFileUrl(url);
         return UserResponse.from(user);
+    }
+
+    public List<UserResponse> findAll() {
+        return userRepository.findAll().stream()
+                .map(UserResponse::from)
+                .toList();
     }
 
     public UserResponse findById(Long id) {
