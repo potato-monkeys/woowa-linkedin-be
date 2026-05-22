@@ -82,8 +82,12 @@
     "password": "password123!"
   }
   ```
-- **Response Body**
-  - 로그인 성공에 대한 토큰 및 유저 정보 객체 반환 (`LoginResponse`)
+  - **Response Body**
+  ```json
+  {
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9..."
+  }
+  ```
 
 #### `GET /api/users/me`
 현재 로그인한 나의 프로필 정보를 조회합니다.
@@ -99,7 +103,7 @@
   }
   ```
 
-#### `PATCH /api/users/me`
+#### `PUT /api/users/me`
 내 프로필 정보(닉네임, 소개글, 비밀번호 등)를 수정합니다.
 - **Authentication**: Required (`@AuthenticationPrincipal`)
 - **Request Body**
@@ -111,14 +115,32 @@
     "newPassword": "newpassword123!"
   }
   ```
-- **Response Body**: 수정된 `UserResponse` 객체
+- **Response Body**
+  ```json
+  {
+    "id": 1,
+    "nickname": "구운감자",
+    "introduction": "반가워요",
+    "profileImageUrl": "https://...",
+    "recordingFileUrl": "https://..."
+  }
+  ```
 
 #### `POST /api/users/me/profile-image`
 내 프로필 이미지를 업로드/수정합니다.
 - **Authentication**: Required (`@AuthenticationPrincipal`)
 - **Request (Multipart/form-data)**
   - `file`: 이미지 파일 (MultipartFile)
-- **Response Body**: 수정된 `UserResponse` 객체
+- **Response Body**
+  ```json
+  {
+    "id": 1,
+    "nickname": "구운감자",
+    "introduction": "반가워요",
+    "profileImageUrl": "https://changed-image-url...",
+    "recordingFileUrl": "https://..."
+  }
+  ```
 
 #### `POST /api/users/me/recording`
 내 음성 소개 녹음 파일을 업로드/수정합니다.
@@ -126,12 +148,30 @@
 - **Request (Multipart/form-data)**
   - `file`: 녹음 파일 (MultipartFile, Optional)
   - `defaultUrl`: 기본 URL (String, Optional)
-- **Response Body**: 수정된 `UserResponse` 객체
+- **Response Body**
+  ```json
+  {
+    "id": 1,
+    "nickname": "구운감자",
+    "introduction": "반가워요",
+    "profileImageUrl": "https://...",
+    "recordingFileUrl": "https://changed-audio-url..."
+  }
+  ```
 
 #### `GET /api/users/{id}`
 특정 유저의 프로필 정보를 조회합니다.
 - **Path Variable**: `id` (유저 ID)
-- **Response Body**: `UserResponse` 객체
+- **Response Body**
+  ```json
+  {
+    "id": 2,
+    "nickname": "고구마",
+    "introduction": "고구마입니다",
+    "profileImageUrl": "https://...",
+    "recordingFileUrl": "https://..."
+  }
+  ```
 
 ---
 
@@ -334,7 +374,7 @@
 #### `GET /api/action-requests/{id}`
 특정 행동 요청의 현재 상태를 단건 조회합니다.
 
-#### `PATCH /api/action-requests/{id}/accept`
+#### `PUT /api/action-requests/{id}/accept`
 받은 요청을 수락합니다.
 - **Request Body**
   ```json
@@ -343,7 +383,7 @@
   }
   ```
 
-#### `PATCH /api/action-requests/{id}/reject`
+#### `PUT /api/action-requests/{id}/reject`
 받은 요청을 거절합니다.
 - **Request Body**
   ```json
@@ -352,7 +392,7 @@
   }
   ```
 
-#### `PATCH /api/action-requests/{id}/complete`
+#### `PUT /api/action-requests/{id}/complete`
 수락된 행동을 최종 완료(완수) 처리합니다.
 - **Request Body**
   ```json
