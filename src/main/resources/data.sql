@@ -9,14 +9,14 @@
 -- ---------------- USERS ----------------
 -- 모든 더미 계정의 평문 비밀번호: "password"
 -- BCrypt 해시(cost=10): $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
-INSERT INTO users (id, nickname, password, introduction) VALUES (1, '감자',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '안녕하세요, 감자입니다.');
-INSERT INTO users (id, nickname, password, introduction) VALUES (2, '고구마', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '달콤한 고구마예요.');
-INSERT INTO users (id, nickname, password, introduction) VALUES (3, '당근',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '건강한 당근입니다.');
-INSERT INTO users (id, nickname, password, introduction) VALUES (4, '양파',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '눈물나는 양파.');
-INSERT INTO users (id, nickname, password, introduction) VALUES (5, '마늘',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '톡 쏘는 마늘.');
-INSERT INTO users (id, nickname, password, introduction) VALUES (6, '호박',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '둥글둥글 호박.');
-INSERT INTO users (id, nickname, password, introduction) VALUES (7, '가지',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '보라보라 가지.');
-INSERT INTO users (id, nickname, password, introduction) VALUES (8, '토마토', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', '빨간 토마토입니다.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (1, '감자',   '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '안녕하세요, 감자입니다.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (2, '고구마', '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '달콤한 고구마예요.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (3, '당근',   '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '건강한 당근입니다.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (4, '양파',   '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '눈물나는 양파.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (5, '마늘',   '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '톡 쏘는 마늘.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (6, '호박',   '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '둥글둥글 호박.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (7, '가지',   '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '보라보라 가지.');
+INSERT INTO users (id, nickname, password, introduction) VALUES (8, '토마토', '$2a$10$/B7nFOJqDXg9sSbmJ.y/PuXeIrjUXJDbSOVNR7FO9mQbj1iTpkBgW', '빨간 토마토입니다.');
 
 -- ---------------- RELATIONS ----------------
 -- (user_a_id < user_b_id 정렬 규칙 준수)
