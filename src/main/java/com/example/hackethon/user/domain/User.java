@@ -20,14 +20,44 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String nickname;
+
     @Column(nullable = false)
-    private String name;
+    private String password;
 
     @Column(nullable = false)
     private String introduction;
 
-    public User(String name, String introduction) {
-        this.name = name;
+    @Column
+    private String profileImageUrl;
+
+    @Column
+    private String recordingFileUrl;
+
+    public User(String nickname, String password, String introduction) {
+        this.nickname = nickname;
+        this.password = password;
         this.introduction = introduction;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public void updateProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public void updateRecordingFileUrl(String recordingFileUrl) {
+        this.recordingFileUrl = recordingFileUrl;
     }
 }
